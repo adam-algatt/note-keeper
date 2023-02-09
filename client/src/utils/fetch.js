@@ -1,8 +1,12 @@
+import { useNoteContext } from "../hooks/useNoteContext";
+
+const { notes, setNotes } = useNoteContext();
+
 export const getAllNotes = () => {
   fetch('http://localhost:5009/note', {
     method: 'GET', 
   })
-    .then((response) => JSON.stringify(response))
+    .then((response) => setNotes(JSON.stringify(response)))
     .catch((err) => console.log(err))
 }
 

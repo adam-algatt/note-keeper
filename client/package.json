@@ -2,6 +2,7 @@
   "name": "notekeeper-app-final",
   "version": "1.0.0",
   "description": "",
+  "proxy":"http://localhost:5009/",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {

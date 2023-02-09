@@ -5,7 +5,9 @@ import Note from "./components/Note";
 import CreateArea from "./components/CreateArea";
 import Search from "./components/Search";
 import NoteList from "./components/NoteList";
+import { deleteNote, getAllNotes, updateNoteById, getNoteById } from './utils/fetch';
 import './styles.css';
+import { useNoteContext } from "./hooks/useNoteContext";
 import { getAllJSDocTagsOfKind } from "typescript";
 
 // refactor the search/filter function below so that any word within the notes.title can be searched for 
@@ -14,21 +16,31 @@ import { getAllJSDocTagsOfKind } from "typescript";
 //react context and hooks tutorial
 
 function App() {
-  const [notes, setNotes] = useState(['']);
+  // const [notes, setNotes] = useState(['']);
   const [notesSearch, setNotesSearch] = useState('');
+  const { notes, setNotes } = useNoteContext(); 
+
+  /*
+        Notes for State
+
+    notes will hold all notes returned from 
+      useEffect function
+
+    *newState = newNote, setNewNote 
+       takes a new note to pass 
+*/
 
   // set notes state to values stored in LS on first render
-  useEffect(() => {
-    if (localStorage.getItem('notes') !== undefined) {
-      setNotes(JSON.parse(localStorage.getItem('notes')))
-    }
-    else { }
+  useEffect(async() => {
+   const json = await getAllNotes()
+   setNotes(json)
+   console.log(notes);
   }, [])
 
   //update LS storage everytime notes state is updated
-  useEffect(() => {
-    localStorage.setItem('notes', JSON.stringify(notes))
-  }, [notes])
+  // useEffect(() => {
+  //   localStorage.setItem('notes', JSON.stringify(notes))
+  // }, [notes])
 
 
   // make sure 'newNote' is being added correctly from notes component
@@ -40,13 +52,13 @@ function App() {
 
   // delete note based on componenet ID 
   function deleteNote(id) {
-    setNotes(prevNotes => {
-      return prevNotes.filter((note, idx) => {
-        return idx !== id;
-      })
-    })
+    // setNotes(prevNotes => {
+    //   return prevNotes.filter((note, idx) => {
+    //     return idx !== id;
+    //   })
+    }
 
-  }
+  
   return (
     <div>
       <Header />
@@ -65,11 +77,11 @@ function App() {
         );
       })} */}
       <NoteList
-        notes={notes.filter((note) => {
-          if (note.title) {
-            return (note.title.toString().toLowerCase().includes(notesSearch))
-          } else return ('')
-        })}
+        // notes={notes.filter((note) => {
+        //   if (note.title) {
+        //     return (note.title.toString().toLowerCase().includes(notesSearch))
+        //   } else return ('')
+        // })}
         handleDelete={deleteNote}
 
       />

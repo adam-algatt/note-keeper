@@ -37,9 +37,9 @@ const noteController = {
   },
 
     getAllNotes (req, res) {
-      console.log('getAllNotes')
+      console.log('getAllNotes called')
        Note.find()
-         .sort({ createdAt: -1 })
+         .sort({ updatedAt: -1 })
          .then((dbNoteData) => {
           res.json(dbNoteData);
          })
