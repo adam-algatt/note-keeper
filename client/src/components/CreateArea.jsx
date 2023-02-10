@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useLocalStorage } from '../useLocalStorage';
 import { v4 as uuidv4 } from 'uuid';
-import { sortAndDeduplicateDiagnostics } from "typescript";
 
 function CreateArea(props) {
 

@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Note from "./components/Note";
 import CreateArea from "./components/CreateArea";
 import Search from "./components/Search";
 import NoteList from "./components/NoteList";
-import { deleteNote, getAllNotes, updateNoteById, getNoteById } from './utils/fetch';
+// import { deleteNote, getAllNotes, updateNoteById, getNoteById } from './utils/fetch';
 import './styles.css';
 import { useNoteContext } from "./hooks/useNoteContext";
-import { getAllJSDocTagsOfKind } from "typescript";
 
 // refactor the search/filter function below so that any word within the notes.title can be searched for 
 // currently it starts from the front so if you skip a word the notes won't filter correctly
@@ -16,10 +15,12 @@ import { getAllJSDocTagsOfKind } from "typescript";
 //react context and hooks tutorial
 
 function App() {
-  // const [notes, setNotes] = useState(['']);
+  const [notes, setNotes] = useState(['']);
   const [notesSearch, setNotesSearch] = useState('');
-  const { notes, setNotes } = useNoteContext(); 
-
+  const destroyFunc = useRef();
+  const effectCalled = useRef(false);
+  const renderAfterCalled = useRef(false);
+  // const { notes, setNotes } = useNoteContext(); 
   /*
         Notes for State
 
@@ -29,12 +30,36 @@ function App() {
     *newState = newNote, setNewNote 
        takes a new note to pass 
 */
+const fetchNotes = async() => {
+  let count = 1 
+  try {
 
+    const response = await fetch('http://localhost:5009/note/', {
+      method: 'GET', 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    const json = await response.json();
+    // console.log(json);
+
+  setNotes(json)
+console.log('notes', notes)
+count ++
+console.log(count);
+  } catch (err) {
+     console.log(err)
+  }
+}
   // set notes state to values stored in LS on first render
-  useEffect(async() => {
-   const json = await getAllNotes()
-   setNotes(json)
-   console.log(notes);
+  useEffect(() => {
+fetchNotes()
+return ()=> {
+  // if the comp didn't render since the useEffect was called,
+  // we know it's the dummy React cycle
+  if (!renderAfterCalled.current) { return; }
+  if (destroyFunc.current) { destroyFunc.current(); }
+}
   }, [])
 
   //update LS storage everytime notes state is updated
@@ -65,26 +90,17 @@ function App() {
 
 
       <CreateArea onAdd={addNote} />
-      {/* {notes.filter((noteItem, index) => {
-        return (
-          <Note
-            key={noteItem.key}
-            title={noteItem.title}
-            content={noteItem.content}
-            id={index}
-            onDelete={deleteNote}
-          />
-        );
-      })} */}
-      <NoteList
-        // notes={notes.filter((note) => {
-        //   if (note.title) {
-        //     return (note.title.toString().toLowerCase().includes(notesSearch))
-        //   } else return ('')
-        // })}
+   
+       <NoteList
+       key={Date.now()}
+        notes={notes?.filter(note => {
+          if (note.title) {
+            return (note.title.toString().toLowerCase().includes(notesSearch))
+          } else return ('')
+        })}
         handleDelete={deleteNote}
 
-      />
+      /> 
       <Search
         searchNote={setNotesSearch}
       />

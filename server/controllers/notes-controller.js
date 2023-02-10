@@ -42,6 +42,7 @@ const noteController = {
          .sort({ updatedAt: -1 })
          .then((dbNoteData) => {
           res.json(dbNoteData);
+          console.log(dbNoteData);
          })
          .catch((err) => {
           console.log(err);

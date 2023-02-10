@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, createContext } from "react";
 
 export const NoteContext = createContext();
 
@@ -7,7 +7,7 @@ const [notes, setNotes] = useState(['']);
 const [selectedNote, setSelectedNote] = useState();
 
 return (
-    <NoteContextProvider 
+    <NoteContext.Provider 
       value={{
       notes,
       setNotes,
@@ -16,7 +16,7 @@ return (
       }}
       >
         {children}
-      </NoteContextProvider>
+      </NoteContext.Provider>
 )
 }
 

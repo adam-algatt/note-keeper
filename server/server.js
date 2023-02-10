@@ -10,9 +10,9 @@ const ENV = process.env;
 const PORT = ENV.PORT || 5009;
 // connectDB();
 const app = express();
-app.use(bp.urlencoded({ extended: true }))
+app.use(express.urlencoded({extended:false}));
 app.use(cors());
-app.use(bp.json())
+app.use(express.json())
 
 app.use('/note', noteRoutes);
 connectDB();

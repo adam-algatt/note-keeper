@@ -46,8 +46,8 @@ footer p {
   border-radius: 7px;
   box-shadow: 0 2px 5px #ccc;
   padding: 10px;
-  max-width: fit-content;
-  min-width: 240px;
+  max-width: 20vw;
+  min-width: 20vw;
   margin: 16px;
   float: left;
 }
@@ -59,6 +59,8 @@ footer p {
 
 .note p {
   font-size: 1.1em;
+  line-height: 1.5em;
+  letter-spacing: .1em;
   margin-bottom: 10px;
   white-space: pre-wrap;
   word-wrap: break-word;
