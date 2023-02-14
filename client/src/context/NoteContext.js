@@ -1,18 +1,15 @@
-import { useState, useEffect, useContext, createContext } from "react";
+import { useState, useContext, createContext } from "react";
 
 export const NoteContext = createContext();
 
-const NoteProvider = ( {children }) => {
-const [notes, setNotes] = useState(['']);
-const [selectedNote, setSelectedNote] = useState();
+const NoteProvider = ( { children }) => { // global state to hold all notes from backend
+const [notes, setNotes] = useState([]);
 
 return (
     <NoteContext.Provider 
       value={{
       notes,
       setNotes,
-      selectedNote,
-      setSelectedNote
       }}
       >
         {children}
