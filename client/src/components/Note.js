@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import delIcon from '../images/delete.png';
 import editIcon from '../images/edit.png'
+import submitIcon from '../images/submit-doc.png'
 import { useNoteContext } from "../hooks/useNoteContext";
 
 const Note = ({ content, title, id, fetchAgain }) => {
@@ -116,7 +117,7 @@ const Note = ({ content, title, id, fetchAgain }) => {
             value={note.content}
             placeholder={note.content}
           />
-        <button className='update-btn' id={id} onClick={editSelectedNote}>Submit</button>
+        <button className='update-btn' id={id} onClick={editSelectedNote}><img src={submitIcon} alt='submit icon'/></button>
         </form>
       )}
       </>

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNoteContext } from "../hooks/useNoteContext"
+import addNoteIcon from '../images/add-note-icon.png'
 
 function CreateArea({ fetchAgain }) {
-  const { notes, setNotes } = useNoteContext(); 
+  const { setNotes } = useNoteContext(); 
   const [note, setNote] = useState({title: "", content: "",});
 
 
@@ -11,7 +12,6 @@ function CreateArea({ fetchAgain }) {
     let params = JSON.stringify(note)
     
     try {
-      let count = 1
       const response = await fetch(`http://localhost:5009/note/`, {
         method: 'POST',
         headers: {
@@ -59,7 +59,7 @@ function CreateArea({ fetchAgain }) {
   }
 
   return (
-    <div>
+    <div className="create-note-form-parent">
       <form className="create-note">
         <input
           name="title"
@@ -76,7 +76,7 @@ function CreateArea({ fetchAgain }) {
           placeholder="Take a note..."
           rows={clicked ? 3 : 1}
         />
-        <button onClick={createNote}>Add</button>
+        <button onClick={createNote}> <img src={addNoteIcon} alt='add note icon' /></button>
       </form>
     </div>
   );
