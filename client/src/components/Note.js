@@ -4,7 +4,7 @@ import editIcon from '../images/edit.png'
 import submitIcon from '../images/submit-doc.png'
 import { useNoteContext } from "../hooks/useNoteContext";
 
-const Note = ({ content, title, id, fetchAgain }) => {
+const Note = ({ content, title, id, fetchAgain, setSearch }) => {
   const { notes, setNotes } = useNoteContext();
   const [editNote, setEditNote] = useState(false);
   const [note, setNote] = useState({title: "", content: "",});
@@ -60,6 +60,7 @@ const Note = ({ content, title, id, fetchAgain }) => {
            note !== json
           ))
         })
+        setSearch('') // clears search to ensure front end reflects backend
         fetchAgain() // function in App component calls getAllNotes from notesControllers
     } 
     catch(err) {
@@ -89,6 +90,7 @@ const Note = ({ content, title, id, fetchAgain }) => {
         console.log(err);
       }
       setEditNote(false)
+      setSearch('')
       fetchAgain(); // function in App component calls getAllNotes from notesControllers
     }
   

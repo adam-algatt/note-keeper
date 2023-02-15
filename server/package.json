@@ -12,6 +12,8 @@
     "nodemon": "^2.0.20"
   },
   "scripts": {
-    "start": "nodemon .server.js"
+    "dev": "nodemon ./server.js",
+    "start": "node ./server.js",
+    "concurrently": "concurrently \"npm start\" \"cd ../client && npm start\""
   }
 }

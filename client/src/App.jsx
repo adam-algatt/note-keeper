@@ -9,7 +9,7 @@ import { useNoteContext } from "./hooks/useNoteContext";
 
 function App() {
   const [notesSearch, setNotesSearch] = useState('');
-  const { notes, setNotes } = useNoteContext(); 
+  const { notes, setNotes, notesArr, setNotesArr } = useNoteContext(); 
 
 const fetchNotes = async () => {
   try {
@@ -29,6 +29,34 @@ const fetchNotes = async () => {
   }
   }
 
+
+
+
+
+useEffect(() => {
+  const searchNotes = () => {
+    const searchArr = [];
+
+    notes?.filter((note, idx) => {
+      if (notesSearch.length > 0 && note) {
+        const stringifiedTitle = note.title.toString().toLowerCase()
+       if(stringifiedTitle.includes(notesSearch.toString().toLowerCase())) {
+        searchArr.push(note);
+       }
+    }
+   if (searchArr.length > 0) {
+    console.log(searchArr)
+    return setNotesArr(searchArr)}
+   
+  }
+    )
+    console.log(searchArr)
+    return setNotesArr(searchArr)
+  }
+  searchNotes()
+}, [notesSearch])
+
+
   // populates noteContext with all notes from getAllNotes Controller
   useEffect(() => {
     fetchNotes()
@@ -38,15 +66,13 @@ const fetchNotes = async () => {
     <div>
       <Header />
       <CreateArea  fetchAgain={fetchNotes} />
-  
+
        <NoteList
        key='note-list'
        fetchAgain={fetchNotes}
-        notes={notes?.filter(note => {
-          if (note.title) {
-            return (note.title.toString().toLowerCase().includes(notesSearch))
-          } else return ('')
-        })}
+       setSearch={setNotesSearch}
+       searchnotes={notesArr.length > 0 ? notesArr : notes}
+     
       /> 
  
       <Search searchNote={setNotesSearch} />

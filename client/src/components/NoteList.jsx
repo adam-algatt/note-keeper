@@ -2,21 +2,23 @@ import React from 'react'
 import Note from './Note';
 import { useNoteContext } from "../hooks/useNoteContext";
 
-const NoteList = ({ fetchAgain }) => {
-const { notes } = useNoteContext(); 
+const NoteList = ({ fetchAgain, searchnotes, setSearch }) => {
+const { notes, setNotes, searchNotes, setSearchNotes } = useNoteContext(); 
+// searchNotes.length > 1 ? notesArr = searchNotes : notesArr = notes; 
   return (
     <div className='note-list'>
-      {notes && notes.map((noteItem, idx) => (
-         
+      
+        {searchnotes?.map((noteItem, idx) => (
           <Note
             key={`${noteItem._id}${idx}`}
             title={noteItem.title}
             content={noteItem.content}
             id={noteItem._id}
             fetchAgain={fetchAgain}
+            setSearch={setSearch}
           />
-        
-      ))}
+      ))
+      }
 
     </div>
   )
