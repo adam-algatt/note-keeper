@@ -13,8 +13,7 @@ function App() {
 
 const fetchNotes = async () => {
   try {
-    let count = 1
-    const response = await fetch('http://localhost:5009/note/', {
+    const response = await fetch('https://note-keeperrr.herokuapp.com/note/', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -45,12 +44,10 @@ useEffect(() => {
        }
     }
    if (searchArr.length > 0) {
-    console.log(searchArr)
     return setNotesArr(searchArr)}
    
   }
     )
-    console.log(searchArr)
     return setNotesArr(searchArr)
   }
   searchNotes()
@@ -60,7 +57,7 @@ useEffect(() => {
   // populates noteContext with all notes from getAllNotes Controller
   useEffect(() => {
     fetchNotes()
-  }, [])
+  })
 
   return (
     <div>

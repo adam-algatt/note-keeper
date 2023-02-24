@@ -12,7 +12,7 @@ function CreateArea({ fetchAgain }) {
     let params = JSON.stringify(note)
     
     try {
-      const response = await fetch(`http://localhost:5009/note/`, {
+      const response = await fetch(`https://note-keeperrr.herokuapp.com/note/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

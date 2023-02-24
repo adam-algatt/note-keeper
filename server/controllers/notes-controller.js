@@ -48,12 +48,10 @@ const noteController = {
     },
 
    updateEntireNote (req, res) {
-    console.log(req.body)
     Note.findOneAndUpdate({_id: req.params.noteId},{ $set:{title: `${req.body.newTitle}`, content: `${req.body.newContent}`}}, {runValidators: true, new: true})
       .then((dbNoteData) => {
        
         if (!dbNoteData) return res.status(404).json({ message: 'No Note with this id!' });
-        console.log(dbNoteData);
         res.json(dbNoteData);
       })
       .catch((err) => {

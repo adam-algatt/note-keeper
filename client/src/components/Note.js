@@ -13,7 +13,7 @@ const Note = ({ content, title, id, fetchAgain, setSearch }) => {
     let json
     try {
       let count = 1
-      const response = await fetch(`http://localhost:5009/note/${id}/`, {
+      const response = await fetch(`https://note-keeperrr.herokuapp.com/note/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ const Note = ({ content, title, id, fetchAgain, setSearch }) => {
 
   const deleteSelectedNote = async() => {
     try {
-     const response = await fetch(`http://localhost:5009/note/${id}`, {
+     const response = await fetch(`https://note-keeperrr.herokuapp.com/note/${id}`, {
         method: 'DELETE', 
         headers: {
           'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ const Note = ({ content, title, id, fetchAgain, setSearch }) => {
           "newContent": `${note.content}`
         }
 
-        const response = await fetch(`http://localhost:5009/note/updatenote/${id}/`, {
+        const response = await fetch(`https://note-keeperrr.herokuapp.com/note/updatenote/${id}/`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'

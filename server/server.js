@@ -15,6 +15,21 @@ app.use(express.json())
 app.use('/note', noteRoutes);
 connectDB();
 
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/build')))
+    // return all requests to react app
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/build', 'index.html'))
+    })
+  } else {
+    app.get('/', (req, res) => {
+        res.send('api running')
+    })
+  }
+
+
+
+
     app.listen(PORT, () => {
         console.log(`the app she listens on http://localhost:${PORT}`)
     })
