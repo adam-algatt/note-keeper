@@ -1,81 +1,78 @@
 import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Note from "./components/Note";
 import CreateArea from "./components/CreateArea";
 import Search from "./components/Search";
 import NoteList from "./components/NoteList";
 import './styles.css';
-import { getAllJSDocTagsOfKind } from "typescript";
-
-// refactor the search/filter function below so that any word within the notes.title can be searched for 
-// currently it starts from the front so if you skip a word the notes won't filter correctly
-
-//react context and hooks tutorial
+import { useNoteContext } from "./hooks/useNoteContext";
 
 function App() {
-  const [notes, setNotes] = useState(['']);
   const [notesSearch, setNotesSearch] = useState('');
+  const { notes, setNotes, notesArr, setNotesArr } = useNoteContext(); 
 
-  // set notes state to values stored in LS on first render
-  useEffect(() => {
-    if (localStorage.getItem('notes') !== undefined) {
-      setNotes(JSON.parse(localStorage.getItem('notes')))
-    }
-    else { }
-  }, [])
-
-  //update LS storage everytime notes state is updated
-  useEffect(() => {
-    localStorage.setItem('notes', JSON.stringify(notes))
-  }, [notes])
-
-
-  // make sure 'newNote' is being added correctly from notes component
-  function addNote(newNote) {
-    setNotes(prevNotes => {
-      return [...prevNotes, newNote];
-    });
-  }
-
-  // delete note based on componenet ID 
-  function deleteNote(id) {
-    setNotes(prevNotes => {
-      return prevNotes.filter((note, idx) => {
-        return idx !== id;
-      })
+const fetchNotes = async () => {
+  try {
+    const response = await fetch('https://note-keeperrr.herokuapp.com/note/', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
     })
 
+    const json = await response.json()
+
+    setNotes(json)
+  } catch (err) {
+    console.log(err);
   }
+  }
+
+
+
+
+
+useEffect(() => {
+  const searchNotes = () => {
+    const searchArr = [];
+
+    notes?.filter((note, idx) => {
+      if (notesSearch.length > 0 && note) {
+        const stringifiedTitle = note.title.toString().toLowerCase()
+       if(stringifiedTitle.includes(notesSearch.toString().toLowerCase())) {
+        searchArr.push(note);
+       }
+    }
+   if (searchArr.length > 0) {
+    return setNotesArr(searchArr)}
+   
+  }
+    )
+    return setNotesArr(searchArr)
+  }
+  searchNotes()
+}, [notesSearch])
+
+
+  // populates noteContext with all notes from getAllNotes Controller
+  useEffect(() => {
+    fetchNotes()
+  })
+
   return (
     <div>
       <Header />
+      <CreateArea  fetchAgain={fetchNotes} />
 
-
-      <CreateArea onAdd={addNote} />
-      {/* {notes.filter((noteItem, index) => {
-        return (
-          <Note
-            key={noteItem.key}
-            title={noteItem.title}
-            content={noteItem.content}
-            id={index}
-            onDelete={deleteNote}
-          />
-        );
-      })} */}
-      <NoteList
-        notes={notes.filter((note) => {
-          if (note.title) {
-            return (note.title.toString().toLowerCase().includes(notesSearch))
-          } else return ('')
-        })}
-        handleDelete={deleteNote}
-
-      />
-      <Search
-        searchNote={setNotesSearch}
-      />
+       <NoteList
+       key='note-list'
+       fetchAgain={fetchNotes}
+       setSearch={setNotesSearch}
+       searchnotes={notesArr.length > 0 ? notesArr : notes}
+     
+      /> 
+ 
+      <Search searchNote={setNotesSearch} />
       <Footer />
     </div>
   );
