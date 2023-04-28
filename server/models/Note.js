@@ -3,14 +3,16 @@ const noteSchema = new Schema(
     {
        title: {
         type: String,
-        required: 'Note title required', 
         minlength: 1,
         maxlength: 100 
        },
        content: {
         type: String,
-        required: true, 
        },
+       pinned: {
+         type: Boolean,
+         default: false, 
+       }
     },
     {timestamps: true},
  );

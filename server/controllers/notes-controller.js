@@ -20,8 +20,8 @@ const noteController = {
  },
 
   addNote(req, res) {
-    const { title, content } = req.body;
-    if (!title || !content) return new Error('Title and Content are required');
+    const { title, content, pinned } = req.body;
+    if (!title && !content) return new Error('At least one of the following fields needs to be filled out: title, content');
 
     Note.create(req.body)
       .then((dbNoteData) => {
@@ -33,6 +33,7 @@ const noteController = {
       });
   },
 
+  //add param for sort type from filter on front end ie pinned, updated at, Title, Content
     getAllNotes(req, res) {
       Note.find()
         .sort({
@@ -47,11 +48,29 @@ const noteController = {
         })
     },
 
+    pinNote (req, res) {
+  
+      Note.findOneAndUpdate({_id: req.params.noteId},{ $set:{pinned: `${req.body.pinned}`}}, {runValidators: true, new: true})
+        .then((dbNoteData) => {
+         
+          if (!dbNoteData) return res.status(404).json({ message: 'No Note with this id!' });
+          console.log(dbNoteData);
+          res.json(dbNoteData);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json(err)
+        })
+     },
+  
    updateEntireNote (req, res) {
-    Note.findOneAndUpdate({_id: req.params.noteId},{ $set:{title: `${req.body.newTitle}`, content: `${req.body.newContent}`}}, {runValidators: true, new: true})
+    console.log(req.body, 'in update entire note')
+
+    Note.findOneAndUpdate({_id: req.params.noteId},{ $set:{title: `${req.body.newTitle}`, content: `${req.body.newContent}`, pinned: `${req.body.newPinned}`}}, {runValidators: true, new: true})
       .then((dbNoteData) => {
        
         if (!dbNoteData) return res.status(404).json({ message: 'No Note with this id!' });
+        console.log(dbNoteData);
         res.json(dbNoteData);
       })
       .catch((err) => {
