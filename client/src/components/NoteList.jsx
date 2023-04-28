@@ -7,7 +7,7 @@ const NoteList = ({ notes, handleDelete }) => {
       {notes.map((noteItem, index) => {
         return (
           <Note
-            key={noteItem.key}
+            key={`${noteItem.key}-${index}`}
             title={noteItem.title}
             content={noteItem.content}
             id={index}
