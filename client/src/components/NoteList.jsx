@@ -1,20 +1,24 @@
 import React from 'react'
 import Note from './Note';
+import { useNoteContext } from "../hooks/useNoteContext";
 
-const NoteList = ({ notes, handleDelete }) => {
+const NoteList = ({ fetchAgain, searchnotes, setSearch }) => {
+const { notes, setNotes, searchNotes, setSearchNotes } = useNoteContext(); 
+// searchNotes.length > 1 ? notesArr = searchNotes : notesArr = notes; 
   return (
     <div className='note-list'>
-      {notes.map((noteItem, index) => {
-        return (
+      
+        {searchnotes?.map((noteItem, idx) => (
           <Note
-            key={`${noteItem.key}-${index}`}
+            key={noteItem.key}
             title={noteItem.title}
             content={noteItem.content}
-            id={index}
-            onDelete={handleDelete}
+            id={noteItem._id}
+            fetchAgain={fetchAgain}
+            setSearch={setSearch}
           />
-        );
-      })}
+      ))
+      }
 
     </div>
   )
